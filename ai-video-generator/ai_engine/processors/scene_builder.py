@@ -23,7 +23,8 @@ class SceneBuilder:
 
     def mock_build_scenes(self, title: str, content: str):
         # Heuristic: Find important entities for stock footage search
-        important_keywords = ["Duterte", "ICC", "Judge", "Court", "Philippines", "Human Rights", "Justice", "Police"]
+        people = ["Duterte", "Joanna Korner", "Judge Korner"]
+        orgs = ["ICC", "International Criminal Court", "Philippines"]
         
         paragraphs = [p.strip() for p in content.split("\n") if len(p.strip()) > 20]
         if not paragraphs:
@@ -31,18 +32,16 @@ class SceneBuilder:
             
         mock_scenes = []
         for i, para in enumerate(paragraphs[:5]): # Limit to 5 scenes for mock
-            # Try to find matching keywords in the paragraph
-            found = [k for k in important_keywords if k.lower() in para.lower()]
+            found_people = [p for p in people if p.lower() in para.lower()]
+            found_orgs = [o for o in orgs if o.lower() in para.lower()]
             
-            # If "Duterte" is found, prioritize it
-            if "Duterte" in found:
-                visual = "Rodrigo Duterte Philippines president news coverage"
-            elif "ICC" in found or "Court" in found or "Judge" in found:
-                visual = "International Criminal Court building or gavel judge courtroom"
-            elif found:
-                visual = f"{found[0]} cinematic professional stock footage"
+            # Prioritize specific people for 'Real' imagery
+            if found_people:
+                visual = f"PERSON:{found_people[0]}" # Prefix to hint pipeline
+            elif found_orgs:
+                visual = f"ORG:{found_orgs[0]}"
             else:
-                visual = f"Cinematic news shot related to {title[:30]}"
+                visual = f"CONCEPT:News report about {title[:30]}"
 
             mock_scenes.append({
                 "id": i + 1,

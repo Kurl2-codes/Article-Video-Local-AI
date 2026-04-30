@@ -116,14 +116,42 @@ class VideoRenderer:
         return final_output
 
     def generate_placeholder_image(self, text: str, output_path: str):
-        # Simplified to avoid drawtext font issues for now
+        """
+        Generates a professional 'Breaking News' style placeholder image 
+        when no stock or real media is found.
+        """
+        clean_text = text.replace("'", "").replace(":", "").replace('"', "")
+        font_path = "C\\:/Windows/Fonts/arialbd.ttf" # Bold font for header
+        
+        # Create a more complex filter for a 'News' look
+        # 1. Indigo/Dark background
+        # 2. 'BREAKING NEWS' banner
+        # 3. Text in the middle
+        video_filter = (
+            f"color=c=#0f172a:s=720x1280:d=1,"
+            f"drawbox=y=0:h=200:color=#ef4444@0.8:t=fill," # Red banner
+            f"drawtext=text='NEWS UPDATE':fontfile='{font_path}':fontcolor=white:fontsize=48:x=(w-text_w)/2:y=75,"
+            f"drawtext=text='{clean_text[:30]}...':fontfile='{font_path}':fontcolor=white:fontsize=32:x=(w-text_w)/2:y=h/2,"
+            f"drawtext=text='VIDIOAI EXCLUSIVE':fontfile='{font_path}':fontcolor=#6366f1:fontsize=24:x=(w-text_w)/2:y=h-150"
+        )
+        
         cmd = [
             self.ffmpeg_path,
             "-y",
             "-f", "lavfi",
-            "-i", "color=c=indigo:s=1280x720:d=1",
+            "-i", video_filter,
             "-frames:v", "1",
             output_path
         ]
-        subprocess.run(cmd, check=True)
+        try:
+            subprocess.run(cmd, check=True)
+        except:
+            # Absolute fallback if drawtext fails
+            cmd_fallback = [
+                self.ffmpeg_path, "-y", "-f", "lavfi", 
+                "-i", "color=c=indigo:s=720x1280:d=1", 
+                "-frames:v", "1", output_path
+            ]
+            subprocess.run(cmd_fallback, check=True)
+            
         return output_path

@@ -54,14 +54,32 @@ class VideoPipeline:
                 except:
                     pass
 
-                # 3. Handle Visuals
-                visual_path = self.clip_manager.fetch_stock_video(scene["visual_description"], scene_id, job_id)
+                # 3. Handle Visuals (Prioritizing 'Real' for People/Orgs)
+                visual_query = scene["visual_description"]
+                is_person = visual_query.startswith("PERSON:")
+                is_org = visual_query.startswith("ORG:")
+                
+                # Strip prefix for search
+                clean_query = visual_query.split(":", 1)[1] if ":" in visual_query else visual_query
+                
+                visual_path = None
+                
+                if is_person:
+                    # FOR PEOPLE: Always try Real Photo (Wikimedia) first!
+                    visual_path = self.clip_manager.fetch_wikimedia_image(clean_query, scene_id, job_id)
+                
                 if not visual_path:
-                    visual_path = self.clip_manager.fetch_stock_image(scene["visual_description"], scene_id, job_id)
+                    # Try Stock Video (Pexels/Pixabay)
+                    visual_path = self.clip_manager.fetch_stock_video(clean_query, scene_id, job_id)
+                
+                if not visual_path:
+                    # Try Stock Image or Wikimedia as fallback
+                    visual_path = self.clip_manager.fetch_stock_image(clean_query, scene_id, job_id)
 
                 if not visual_path:
+                    # Final fallback: News Placeholder
                     visual_path = IMAGE_ASSETS / f"{job_id}_scene_{scene_id}.png"
-                    self.renderer.generate_placeholder_image(scene["visual_description"][:50] + "...", str(visual_path))
+                    self.renderer.generate_placeholder_image(clean_query[:50], str(visual_path))
                     visual_path = str(visual_path)
 
                 # 4. Create Scene Video

@@ -28,6 +28,9 @@ OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3")
 # Pexels Config (Stock Video)
 PEXELS_API_KEY = "BR666hnurQiAFefNRxw9sCGxbvAKdFn3nquyag7oo10c62fD3CH4c9o3"
 
+# Pixabay Config (Additional Stock Source)
+PIXABAY_API_KEY = os.getenv("PIXABAY_API_KEY", "")
+
 # TTS Config
 TTS_VOICE = "en-US-GuyNeural"
 AVAILABLE_VOICES = [
