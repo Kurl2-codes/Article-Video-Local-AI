@@ -41,7 +41,7 @@ const ScenePreview: React.FC<ScenePreviewProps> = ({ scenes }) => {
               </h4>
               
               <div className="bg-slate-900/50 rounded-xl p-4 mb-4 border border-slate-800 group-hover:border-indigo-500/20 transition-all">
-                <p className="text-sm text-slate-400 leading-relaxed italic">
+                <p className="text-xs sm:text-sm text-slate-400 leading-relaxed italic">
                   "{scene.narration}"
                 </p>
               </div>

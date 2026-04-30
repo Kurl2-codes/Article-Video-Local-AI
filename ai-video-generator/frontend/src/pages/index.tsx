@@ -82,7 +82,7 @@ export default function Home() {
             Vidio<span className="text-indigo-500 text-glow">AI</span>
           </h1>
           
-          <p className="text-slate-400 text-xl max-w-md mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-6 duration-1000">
+          <p className="text-slate-400 text-base sm:text-xl max-w-md mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-6 duration-1000 px-4">
             Create professional-grade <span className="text-white font-semibold">cinematic mobile videos</span> from any article in seconds.
           </p>
         </header>

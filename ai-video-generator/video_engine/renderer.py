@@ -40,8 +40,8 @@ class VideoRenderer:
         clean_text = wrapped_text.replace("'", "").replace(":", "").replace('"', "")
         font_path = "C\\:/Windows/Fonts/arial.ttf"
         subtitle_filter = (
-            f"drawtext=text='{clean_text}':fontfile='{font_path}':fontcolor=white:fontsize=36:"
-            f"box=1:boxcolor=black@0.5:boxborderw=10:x=(w-text_w)/2:y=h-250" # Higher up for mobile UI
+            f"drawtext=text='{clean_text}':fontfile='{font_path}':fontcolor=white:fontsize=28:"
+            f"box=1:boxcolor=black@0.6:boxborderw=8:x=(w-text_w)/2:y=h-220" # More compact for mobile
         )
 
         # Scale and crop for 9:16 vertical

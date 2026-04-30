@@ -7,8 +7,8 @@ Article Content: {content}
 For each scene, provide:
 1. title: A short title for the scene.
 2. narration: The text to be spoken by the AI voice.
-3. visual_description: A detailed description of what should be shown on screen (stock footage or animation).
-4. emotion: The tone or emotion of the scene (e.g., informative, exciting, calm, urgent).
+3. visual_description: A highly specific description for stock video search. Use clear names like "Rodrigo Duterte", "International Criminal Court building", or "Courtroom gavel". Focus on visual accuracy.
+4. emotion: The tone or emotion of the scene.
 
 Return the output strictly as a JSON list of objects.
 Each object must follow this structure:

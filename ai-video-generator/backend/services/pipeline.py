@@ -55,9 +55,9 @@ class VideoPipeline:
                     pass
 
                 # 3. Handle Visuals
-                visual_path = self.clip_manager.fetch_stock_video(scene["visual_description"], scene_id)
+                visual_path = self.clip_manager.fetch_stock_video(scene["visual_description"], scene_id, job_id)
                 if not visual_path:
-                    visual_path = self.clip_manager.fetch_stock_image(scene["visual_description"], scene_id)
+                    visual_path = self.clip_manager.fetch_stock_image(scene["visual_description"], scene_id, job_id)
 
                 if not visual_path:
                     visual_path = IMAGE_ASSETS / f"{job_id}_scene_{scene_id}.png"
@@ -82,13 +82,29 @@ class VideoPipeline:
             final_video_path = VIDEO_OUTPUT / f"{job_id}_final.mp4"
             self.renderer.concatenate_videos(scene_videos, str(final_video_path))
 
-            # Success
+            # 6. Success & Cleanup
             job_store[job_id].update({
                 "status": "completed", 
                 "progress": 100, 
                 "video_url": f"/outputs/videos/{job_id}_final.mp4",
                 "scenes": processed_scenes
             })
+
+            # AUTO CLEANUP: Delete temp scene videos, audio clips, and stock assets
+            print(f"Cleaning up temporary assets for job {job_id}...")
+            for scene in processed_scenes:
+                try:
+                    if os.path.exists(scene["audio_path"]):
+                        os.remove(scene["audio_path"])
+                    if os.path.exists(scene["visual_path"]) and job_id in scene["visual_path"]:
+                        os.remove(scene["visual_path"])
+                except Exception as e:
+                    print(f"Cleanup warning: Could not delete scene asset: {e}")
+            
+            # Delete scene video clips and their directory
+            import shutil
+            if job_dir.exists():
+                shutil.rmtree(job_dir)
 
         except Exception as e:
             print(f"Pipeline error for job {job_id}: {e}")

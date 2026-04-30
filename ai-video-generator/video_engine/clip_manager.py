@@ -7,7 +7,7 @@ class ClipManager:
         self.api_key = api_key
         self.base_url = "https://api.pexels.com/videos/search"
 
-    def fetch_stock_video(self, query: str, scene_id: int):
+    def fetch_stock_video(self, query: str, scene_id: int, job_id: str):
         if not self.api_key:
             print("No Pexels API Key provided. Skipping stock video fetch.")
             return None
@@ -27,7 +27,7 @@ class ClipManager:
 
             if data["videos"]:
                 video_url = data["videos"][0]["video_files"][0]["link"]
-                video_path = VIDEO_ASSETS / f"stock_scene_{scene_id}.mp4"
+                video_path = VIDEO_ASSETS / f"{job_id}_stock_{scene_id}.mp4"
                 
                 # Download the video
                 print(f"Downloading stock video for query: {query}")
@@ -40,7 +40,7 @@ class ClipManager:
         
         return None
 
-    def fetch_stock_image(self, query: str, scene_id: int):
+    def fetch_stock_image(self, query: str, scene_id: int, job_id: str):
         if not self.api_key:
             return None
 
@@ -59,7 +59,7 @@ class ClipManager:
 
             if data["photos"]:
                 img_url = data["photos"][0]["src"]["large2x"]
-                img_path = IMAGE_ASSETS / f"stock_scene_{scene_id}.jpg"
+                img_path = IMAGE_ASSETS / f"{job_id}_stock_{scene_id}.jpg"
                 
                 print(f"Downloading stock image for query: {query}")
                 res = requests.get(img_url)
