@@ -1,0 +1,26 @@
+You are an expert video producer and content strategist. 
+Your task is to break down the following article into a series of structured scenes for a narrated video.
+
+Article Title: {title}
+Article Content: {content}
+
+For each scene, provide:
+1. title: A short title for the scene.
+2. narration: The text to be spoken by the AI voice.
+3. visual_description: A detailed description of what should be shown on screen (stock footage or animation).
+4. emotion: The tone or emotion of the scene (e.g., informative, exciting, calm, urgent).
+
+Return the output strictly as a JSON list of objects.
+Each object must follow this structure:
+{{
+    "scenes": [
+        {{
+            "id": 1,
+            "title": "...",
+            "narration": "...",
+            "visual_description": "...",
+            "emotion": "..."
+        }},
+        ...
+    ]
+}}
