@@ -1,0 +1,26 @@
+# General
+**/node_modules/
+**/.next/
+**/out/
+**/build/
+**/dist/
+**/.vercel
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+**/venv/
+**/.env
+**/.venv
+**/env/
+**/ENV/
+
+# Project specific
+ai-video-generator/outputs/
+ai-video-generator/assets/audio/
+ai-video-generator/assets/images/
+ai-video-generator/assets/videos/
+ai-video-generator/temp/
+
+# OS
+.DS_Store
+Thumbs.db
